@@ -7,9 +7,8 @@ Lawnchair.plugin((function(){
     var interpolate = function(template, args) {
         var parts = template.split('?').filter(function(i) { return i != ''})
         ,   query = ''
-
         for (var i = 0, l = parts.length; i < l; i++) {
-            query += parts[i] + args[i]    
+            query += parts[i] + (args[i] ? args[i] : '');
         }
         return query
     }
@@ -43,7 +42,9 @@ Lawnchair.plugin((function(){
                 // overwrite working results
                 this.__results = r
                 // callback / chain
-                if (args.length === 1) this.fn(this.name, last).call(this, this.__results)   
+                if (typeof(last) === 'function')  {
+                    this.fn(this.name, last).call(this, this.__results)
+                }
             })
             return this 
         },  
